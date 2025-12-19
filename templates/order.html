@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Summary</title>
+    <style>
+        body {
+            margin: 0; font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover; display: flex; flex-direction: column; align-items: center; min-height: 100vh; color: white;
+        }
+        .summary-card { background: rgba(255, 255, 255, 0.95); color: #333; width: 90%; max-width: 600px; border-radius: 15px; padding: 30px; margin-top: 50px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        .total { font-size: 1.5rem; font-weight: bold; text-align: right; margin-top: 20px; color: #2b5db1; }
+        .btn { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; color: white; margin: 5px; display: inline-block;}
+        .btn-print { background: #28a745; }
+        .btn-clear { background: #dc3545; }
+        .btn-home { background: #2b5db1; }
+    </style>
+</head>
+<body>
+    <h1>Confirm Your Order</h1>
+    <div class="summary-card">
+        <table id="orderTable">
+            <thead><tr><th>Item</th><th>Qty</th><th>Subtotal</th></tr></thead>
+            <tbody id="orderBody"></tbody>
+        </table>
+        <div class="total" id="grandTotal">Total: ₹0</div>
+        <div style="text-align:center">
+            <a href="/" class="btn btn-home">Add More</a>
+            <button onclick="window.print()" class="btn btn-print">Print Receipt</button>
+            <button onclick="clearAll()" class="btn btn-clear">Clear Order</button>
+        </div>
+    </div>
+    <script>
+        const orders = JSON.parse(localStorage.getItem("orders")) || [];
+        const tbody = document.getElementById("orderBody");
+        let total = 0;
+        orders.forEach(item => {
+            const sub = item.price * item.quantity;
+            total += sub;
+            tbody.innerHTML += `<tr><td>${item.name}</td><td>${item.quantity}</td><td>₹${sub}</td></tr>`;
+        });
+        document.getElementById("grandTotal").innerText = "Total: ₹" + total;
+        function clearAll() { localStorage.removeItem("orders"); window.location.reload(); }
+    </script>
+</body>
+</html>
