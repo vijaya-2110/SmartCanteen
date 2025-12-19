@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Canteen Menu</title>
+    <style>
+        body {
+            margin: 0; font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1600&q=80');
+            background-size: cover; background-position: center; background-attachment: fixed;
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+        }
+        h1 { color: white; font-size: 3.5rem; margin-top: 50px; text-shadow: 2px 2px 10px rgba(0,0,0,0.8); }
+        .menu-container { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; padding: 20px; }
+        .card { background: rgba(255, 255, 255, 0.9); border-radius: 15px; width: 320px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 20px;}
+        .header { color: white; text-align: center; padding: 15px; font-size: 1.8rem; font-weight: bold; }
+        
+        /* Category Colors */
+        .breakfast .header { background-color: #8B4513; }
+        .lunch .header { background-color: #556B2F; }
+        .snacks .header { background-color: #A0522D; }
+        
+        .content { padding: 20px; color: #333; }
+        .item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-weight: 600; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 5px;}
+        .order-btn { background-color: #2b5db1; color: white; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .order-btn:hover { background-color: #1a3a6e; transform: scale(1.05); }
+        .nav-links { margin: 20px; }
+        .nav-links a { color: white; margin: 0 15px; font-size: 1.2rem; text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>Canteen Menu</h1>
+    <div class="nav-links">
+        <a href="/order">View My Order</a>
+    </div>
+
+    <div class="menu-container">
+        <div class="card breakfast">
+            <div class="header">Breakfast</div>
+            <div class="content">
+                <div class="item"><span>Idly</span><div>₹30 <button class="order-btn" onclick="addItem('Idly', 30)">Order</button></div></div>
+                <div class="item"><span>Dosa</span><div>₹40 <button class="order-btn" onclick="addItem('Dosa', 40)">Order</button></div></div>
+                <div class="item"><span>Puri</span><div>₹35 <button class="order-btn" onclick="addItem('Puri', 35)">Order</button></div></div>
+                <div class="item"><span>Punugulu</span><div>₹25 <button class="order-btn" onclick="addItem('Punugulu', 25)">Order</button></div></div>
+                <div class="item"><span>Vada</span><div>₹35 <button class="order-btn" onclick="addItem('Vada', 35)">Order</button></div></div>
+                <div class="item"><span>Pongal</span><div>₹35 <button class="order-btn" onclick="addItem('Pongal', 35)">Order</button></div></div>
+                <div class="item"><span>Upma</span><div>₹30 <button class="order-btn" onclick="addItem('Upma', 30)">Order</button></div></div>
+                <div class="item"><span>Uggani</span><div>₹30 <button class="order-btn" onclick="addItem('Uggani', 30)">Order</button></div></div>
+                <div class="item"><span>Poha</span><div>₹25 <button class="order-btn" onclick="addItem('Poha', 25)">Order</button></div></div>
+            </div>
+        </div>
+
+        <div class="card lunch">
+            <div class="header">Lunch</div>
+            <div class="content">
+                <div class="item"><span>Full Meals</span><div>₹80 <button class="order-btn" onclick="addItem('Full Meals', 80)">Order</button></div></div>
+                <div class="item"><span>Sambar Rice</span><div>₹50 <button class="order-btn" onclick="addItem('Sambar Rice', 50)">Order</button></div></div>
+                <div class="item"><span>Curd Rice</span><div>₹40 <button class="order-btn" onclick="addItem('Curd Rice', 40)">Order</button></div></div>
+                <div class="item"><span>Plain Rice</span><div>₹30 <button class="order-btn" onclick="addItem('Plain Rice', 30)">Order</button></div></div>
+            </div>
+        </div>
+
+        <div class="card snacks">
+            <div class="header">Snacks</div>
+            <div class="content">
+                <div class="item"><span>Samosa</span><div>₹15 <button class="order-btn" onclick="addItem('Samosa', 15)">Order</button></div></div>
+                <div class="item"><span>Puffs</span><div>₹20 <button class="order-btn" onclick="addItem('Puffs', 20)">Order</button></div></div>
+                <div class="item"><span>Cool Drinks</span><div>₹25 <button class="order-btn" onclick="addItem('Cool Drinks', 25)">Order</button></div></div>
+                <div class="item"><span>Maggi</span><div>₹40 <button class="order-btn" onclick="addItem('Maggi', 40)">Order</button></div></div>
+                <div class="item"><span>Fruit Salad</span><div>₹50 <button class="order-btn" onclick="addItem('Fruit Salad', 50)">Order</button></div></div>
+                <div class="item"><span>Ice Creams</span><div>₹30 <button class="order-btn" onclick="addItem('Ice Creams', 30)">Order</button></div></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function addItem(name, price) {
+            let orders = JSON.parse(localStorage.getItem("orders")) || [];
+            let existing = orders.find(i => i.name === name);
+            if (existing) { 
+                existing.quantity += 1; 
+            } else { 
+                orders.push({ name: name, price: price, quantity: 1 }); 
+            }
+            localStorage.setItem("orders", JSON.stringify(orders));
+            // Redirects immediately to order summary
+            window.location.href = "/order";
+        }
+    </script>
+</body>
+</html>
